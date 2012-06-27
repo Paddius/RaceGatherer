@@ -25,6 +25,8 @@ public class RaceGathererDB {
         User patrick = new User("Patrick", "test123", "thepadde86@googlemail.com");
         User dieter = new User("Dieter", "gruetzidu", "dieter@dieterweb.de");
         User falko = new User("Falko", "habichnicht", "falko@balko.de");
+        User mirco = new User("mirco", "nixPW", "m.kullack@kabelmail.de");
+        User mirco1 = new User("mirco", "nixPW", "m.kullack@kabelmail.de");
         UserDAO userDAO = new UserDAO();
         
         userDAO.addUser(patrick);
