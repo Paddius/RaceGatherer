@@ -4,9 +4,13 @@
  */
 package de.racegatherer;
 
+import de.racegatherer.classes.Championship;
+import de.racegatherer.classes.Driver;
+import de.racegatherer.classes.Team;
 import de.racegatherer.classes.User;
 import de.racegatherer.dao.UserDAO;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,16 +31,28 @@ public class RaceGathererDB {
         userDAO.addUser(dieter);
         userDAO.addUser(falko);
         
+        userDAO.addDriver(patrick, new Driver(new Team(), new Championship()));
+        userDAO.addDriver(patrick, new Driver(new Team(), new Championship()));
+        userDAO.addDriver(patrick, new Driver(new Team(), new Championship()));
+        userDAO.addDriver(patrick, new Driver(new Team(), new Championship()));
+        User temp = userDAO.getUserByName("Patrick");
+        List<Driver> listOfDrivers =  userDAO.getDrivers(temp);
+        
+        for (Driver driver : listOfDrivers) {
+            System.out.println("Driver: " + driver.getId());
+        }
 //        *** getUserById test ***
 //        patrick = userDAO.getUserById(new Long("1"));
 //        System.out.println(patrick.getEmail());
         
-        ArrayList<User> list = (ArrayList<User>) userDAO.getUsers();
         
-        for (User user : list) {
-            System.out.println("Name: " + user.getName() + " | Password: " 
-                    + user.getPw() + " | Email: " + user.getEmail());
-        }
+//        *** list all users test ***        
+//        ArrayList<User> list = (ArrayList<User>) userDAO.getUsers();
+//        
+//        for (User user : list) {
+//            System.out.println("Name: " + user.getName() + " | Password: " 
+//                    + user.getPw() + " | Email: " + user.getEmail());
+//        }
         
 //        userDAO.deleteUserById(new Long("1"));    
        

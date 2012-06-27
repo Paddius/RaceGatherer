@@ -5,6 +5,7 @@
 package de.racegatherer.dao;
 
 import de.racegatherer.HibernateUtil;
+import de.racegatherer.classes.Driver;
 import de.racegatherer.classes.User;
 import java.util.List;
 import org.hibernate.Query;
@@ -77,5 +78,24 @@ public class UserDAO {
         Transaction transaction = session.beginTransaction();        
         Query query = session.createQuery("from User");
         return query.list();
+    }
+    
+    public void addDriver(User u, Driver d) {
+        DriverDAO driverDAO = new DriverDAO();
+        driverDAO.addDriver(d);
+        
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();        
+        u.getDrivers().add(d);
+        session.saveOrUpdate(u);
+        transaction.commit();
+    }
+    
+    public List<Driver> getDrivers(User u) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();  
+        u = (User) session.merge(u);    
+        List<Driver> drivers = (List<Driver>) u.getDrivers();
+        return drivers;
     }
 }

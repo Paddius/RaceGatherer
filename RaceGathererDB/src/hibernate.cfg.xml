@@ -10,6 +10,10 @@
     <property name="hibernate.current_session_context_class">thread</property>
     <property name="hibernate.hbm2ddl.auto">create-drop</property>
     <property name="hibernate.show_sql">true</property>
-    <mapping class="de.nowak.racegatherer.classes.User"/>
+    <mapping class="de.racegatherer.classes.User"/>
+    <mapping class="de.racegatherer.classes.Championship"/>
+    <mapping class="de.racegatherer.classes.Driver"/>
+    <mapping class="de.racegatherer.classes.Team"/>
+    <mapping class="de.racegatherer.classes.Track"/>
   </session-factory>
 </hibernate-configuration>

@@ -7,6 +7,7 @@ package de.racegatherer.classes;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -23,7 +24,7 @@ public class User implements Serializable {
     private String name;
     private String pw;
     private String email;
-    @OneToMany
+    @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     private Collection<Driver> drivers = new ArrayList<Driver>();
 
     public User() {
