@@ -4,16 +4,8 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/RACEGATHERER</property>
-    <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">dbtest123</property>
-    <property name="hibernate.current_session_context_class">thread</property>
-    <property name="hibernate.hbm2ddl.auto">create-drop</property>
-    <property name="hibernate.show_sql">true</property>
-    <mapping class="de.racegatherer.classes.User"/>
-    <mapping class="de.racegatherer.classes.Championship"/>
-    <mapping class="de.racegatherer.classes.Driver"/>
-    <mapping class="de.racegatherer.classes.Team"/>
-    <mapping class="de.racegatherer.classes.Track"/>
+    <property name="hibernate.connection.url">jdbc:mysql://pandabeer.servebeer.com:3306/racegatherer</property>
+    <property name="hibernate.connection.username">User_RG</property>
+    <property name="hibernate.connection.password">4fEuJ9vRHTQT5rwf</property>
   </session-factory>
 </hibernate-configuration>
