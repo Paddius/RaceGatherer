@@ -7,5 +7,12 @@
     <property name="hibernate.connection.url">jdbc:mysql://pandabeer.servebeer.com:3306/racegatherer</property>
     <property name="hibernate.connection.username">User_RG</property>
     <property name="hibernate.connection.password">4fEuJ9vRHTQT5rwf</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    
+    <mapping class="de.racegatherer.classes.User"/>
+    <mapping class="de.racegatherer.classes.Championship"/>
+    <mapping class="de.racegatherer.classes.Driver"/>
+    <mapping class="de.racegatherer.classes.Track"/>
+    <mapping class="de.racegatherer.classes.Team"/>
   </session-factory>
 </hibernate-configuration>

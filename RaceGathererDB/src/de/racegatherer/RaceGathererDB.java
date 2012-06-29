@@ -27,11 +27,13 @@ public class RaceGathererDB {
         User falko = new User("Falko", "habichnicht", "falko@balko.de");
         User mirco = new User("mirco", "nixPW", "m.kullack@kabelmail.de");
         User mirco1 = new User("mirco", "nixPW", "m.kullack@kabelmail.de");
+        User dbtest = new User("dbtest", "test1234631", "test@test.de");
         UserDAO userDAO = new UserDAO();
         
         userDAO.addUser(patrick);
         userDAO.addUser(dieter);
         userDAO.addUser(falko);
+        userDAO.addUser(dbtest);
         
         userDAO.addDriver(patrick, new Driver(new Team(), new Championship()));
         userDAO.addDriver(patrick, new Driver(new Team(), new Championship()));
@@ -43,6 +45,10 @@ public class RaceGathererDB {
         for (Driver driver : listOfDrivers) {
             System.out.println("Driver: " + driver.getId());
         }
+        
+//        *** getUserByEmail test ***
+//        System.out.println("name: " + userDAO.getUserByEmail("thepadde86@googlemail.com").getName());
+        
 //        *** getUserById test ***
 //        patrick = userDAO.getUserById(new Long("1"));
 //        System.out.println(patrick.getEmail());

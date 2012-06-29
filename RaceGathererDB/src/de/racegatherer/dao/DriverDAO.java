@@ -4,7 +4,7 @@
  */
 package de.racegatherer.dao;
 
-import de.racegatherer.HibernateUtil;
+import de.racegatherer.utils.HibernateUtil;
 import de.racegatherer.classes.Driver;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

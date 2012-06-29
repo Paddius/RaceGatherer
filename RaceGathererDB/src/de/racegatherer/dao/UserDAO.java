@@ -4,10 +4,15 @@
  */
 package de.racegatherer.dao;
 
-import de.racegatherer.HibernateUtil;
 import de.racegatherer.classes.Driver;
 import de.racegatherer.classes.User;
+import de.racegatherer.utils.HibernateUtil;
+import de.racegatherer.utils.PasswordEncoder;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -19,16 +24,35 @@ import org.hibernate.Transaction;
 public class UserDAO {
 
     public void addUser(User u) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-        session.save(u);
-        transaction.commit();
+        /* check if username or email already exists */
+        if (getUserByName(u.getName()) == null && getUserByEmail(u.getEmail()) == null) {
+            /* no user with this username or email exists -> create new user */
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            Transaction transaction = session.beginTransaction();
+            try {
+                u.setPw(PasswordEncoder.getInstance().encode(u.getPw(), PasswordEncoder.getSalt()));
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            session.save(u);
+            transaction.commit();
+        } else {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.INFO, "user already exists");
+        }
     }
 
     public void updatePassword(User u, String newPW) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        u.setPw(newPW);
+        try {
+            u.setPw(PasswordEncoder.getInstance().encode(newPW, PasswordEncoder.getSalt()));
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         session.saveOrUpdate(u);
         transaction.commit();
     }
@@ -51,7 +75,6 @@ public class UserDAO {
             transaction.commit();
             return null;
         }
-
     }
 
     public User getUserById(Long Id) {
@@ -72,30 +95,46 @@ public class UserDAO {
         }
 
     }
-    
+
     public List<User> getUsers() {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();        
+        Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from User");
         return query.list();
     }
-    
+
     public void addDriver(User u, Driver d) {
         DriverDAO driverDAO = new DriverDAO();
         driverDAO.addDriver(d);
-        
+
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();        
+        Transaction transaction = session.beginTransaction();
         u.getDrivers().add(d);
         session.saveOrUpdate(u);
         transaction.commit();
     }
-    
+
     public List<Driver> getDrivers(User u) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();  
-        u = (User) session.merge(u);    
+        Transaction transaction = session.beginTransaction();
+        u = (User) session.merge(u);
         List<Driver> drivers = (List<Driver>) u.getDrivers();
         return drivers;
+    }
+
+    public User getUserByEmail(String email) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from User where email = :email");
+        query.setParameter("email", email);
+
+        List resultList = query.list();
+        if (resultList.size() > 0) {
+            transaction.commit();
+            return (User) resultList.listIterator().next();
+        } else {
+            transaction.commit();
+            return null;
+        }
     }
 }
