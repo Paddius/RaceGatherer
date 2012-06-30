@@ -8,7 +8,7 @@
     <property name="hibernate.connection.username">User_RG</property>
     <property name="hibernate.connection.password">4fEuJ9vRHTQT5rwf</property>
     <property name="hibernate.current_session_context_class">thread</property>
-    
+    <property name="hibernate.hbm2ddl.auto">create-drop</property>
     <mapping class="de.racegatherer.classes.User"/>
     <mapping class="de.racegatherer.classes.Championship"/>
     <mapping class="de.racegatherer.classes.Driver"/>

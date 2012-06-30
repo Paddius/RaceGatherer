@@ -4,10 +4,12 @@
  */
 package de.racegatherer;
 
+import de.racegatherer.dao.TeamDAO;
 import de.racegatherer.classes.Championship;
 import de.racegatherer.classes.Driver;
 import de.racegatherer.classes.Team;
 import de.racegatherer.classes.User;
+import de.racegatherer.dao.ChampionshipDAO;
 import de.racegatherer.dao.UserDAO;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,26 +27,54 @@ public class RaceGathererDB {
         User patrick = new User("Patrick", "test123", "thepadde86@googlemail.com");
         User dieter = new User("Dieter", "gruetzidu", "dieter@dieterweb.de");
         User falko = new User("Falko", "habichnicht", "falko@balko.de");
-        User mirco = new User("mirco", "nixPW", "m.kullack@kabelmail.de");
-        User mirco1 = new User("mirco", "nixPW", "m.kullack@kabelmail.de");
         User dbtest = new User("dbtest", "test1234631", "test@test.de");
         UserDAO userDAO = new UserDAO();
-        
+        TeamDAO teamDAO = new TeamDAO();
+        ChampionshipDAO csDAO = new ChampionshipDAO();
+
+        // add 4 users
         userDAO.addUser(patrick);
         userDAO.addUser(dieter);
         userDAO.addUser(falko);
         userDAO.addUser(dbtest);
         
-        userDAO.addDriver(patrick, new Driver(new Team(), new Championship()));
-        userDAO.addDriver(patrick, new Driver(new Team(), new Championship()));
-        userDAO.addDriver(patrick, new Driver(new Team(), new Championship()));
-        userDAO.addDriver(patrick, new Driver(new Team(), new Championship()));
-        User temp = userDAO.getUserByName("Patrick");
-        List<Driver> listOfDrivers =  userDAO.getDrivers(temp);
+        // create teams        
+        Team lotus = new Team("Lotus Racing");
+        Team mclaren = new Team("McLaren");
+        Team mercedes = new Team("Mercedes");
+        Team ferrari = new Team("Ferrari");
         
-        for (Driver driver : listOfDrivers) {
-            System.out.println("Driver: " + driver.getId());
-        }
+        teamDAO.addTeam(lotus);
+        teamDAO.addTeam(mclaren);
+        teamDAO.addTeam(mercedes);
+        teamDAO.addTeam(ferrari);
+                
+        // create championships 
+        Championship pot = new Championship("pot meisterschaft 2011");
+        Championship ht = new Championship("hottentottenliga");
+        
+        csDAO.addChampionship(ht);
+        csDAO.addChampionship(pot);
+        
+        userDAO.joinChampionship(patrick, pot, lotus);
+        userDAO.joinChampionship(falko, ht, mclaren);
+        userDAO.joinChampionship(dieter, pot, ferrari);
+        userDAO.joinChampionship(dbtest, ht, mercedes);
+        
+//        *** get all drivers for a user ***
+//        User temp = userDAO.getUserByName("Patrick");
+//        List<Driver> listOfDrivers =  userDAO.getDrivers(temp);
+//        
+//        for (Driver driver : listOfDrivers) {
+//            System.out.println("Driver: " + driver.getId());
+//        }
+        
+//        *** delete all users ***
+//        List<User> users = userDAO.getUsers();
+//        
+//        for (User user : users) {
+//            userDAO.deleteUser(user);
+//        }
         
 //        *** getUserByEmail test ***
 //        System.out.println("name: " + userDAO.getUserByEmail("thepadde86@googlemail.com").getName());

@@ -4,7 +4,9 @@
  */
 package de.racegatherer.dao;
 
+import de.racegatherer.classes.Championship;
 import de.racegatherer.classes.Driver;
+import de.racegatherer.classes.Team;
 import de.racegatherer.classes.User;
 import de.racegatherer.utils.HibernateUtil;
 import de.racegatherer.utils.PasswordEncoder;
@@ -104,9 +106,6 @@ public class UserDAO {
     }
 
     public void addDriver(User u, Driver d) {
-        DriverDAO driverDAO = new DriverDAO();
-        driverDAO.addDriver(d);
-
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         u.getDrivers().add(d);
@@ -136,5 +135,30 @@ public class UserDAO {
             transaction.commit();
             return null;
         }
+    }
+    
+    public void deleteUser(User u) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();   
+        session.delete(u);
+        transaction.commit();
+    }
+    
+    public void joinChampionship(User u, Championship c, Team t) {            
+        DriverDAO driverDAO = new DriverDAO();
+        UserDAO userDAO = new UserDAO();
+        
+        Driver temp_driver = new Driver(t);
+        driverDAO.addDriver(temp_driver);
+        userDAO.addDriver(u, temp_driver);
+        
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction(); 
+        
+        if (c.getAdmins().isEmpty()) {
+            c.getAdmins().add(temp_driver);
+        }
+        c.getDrivers().add(temp_driver);
+        transaction.commit();
     }
 }

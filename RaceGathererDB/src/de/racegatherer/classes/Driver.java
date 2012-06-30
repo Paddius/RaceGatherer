@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -19,15 +20,16 @@ public class Driver implements Serializable {
     @Id
     @GeneratedValue
     private Long Id;
+    @OneToOne
     private Team team;
+    @OneToOne
     private Championship cs;
 
     public Driver() {
     }
 
-    public Driver(Team team, Championship cs) {
+    public Driver(Team team) {
         this.team = team;
-        this.cs = cs;
     }
 
     public Long getId() {
